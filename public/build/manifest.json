@@ -1,0 +1,35 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-DOFbRq-q.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/app.tsx": {
+    "file": "assets/app-CmD34DBM.js",
+    "name": "app",
+    "src": "resources/js/app.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/pages/Bot/WebApp.tsx"
+    ],
+    "css": [
+      "assets/app-DOFbRq-q.css"
+    ]
+  },
+  "resources/js/pages/Bot/WebApp.tsx": {
+    "file": "assets/WebApp-DdrXtlk5.js",
+    "name": "WebApp",
+    "src": "resources/js/pages/Bot/WebApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx"
+    ],
+    "css": [
+      "assets/app-DOFbRq-q.css"
+    ]
+  }
+}
