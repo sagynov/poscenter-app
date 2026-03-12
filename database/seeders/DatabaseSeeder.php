@@ -14,8 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::firstOrCreate([
           'email' => 'admin@bot.poscenter.kz',
         ], [
