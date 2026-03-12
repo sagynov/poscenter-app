@@ -68,7 +68,8 @@ class ProductForm
                     ->directory('products'),
                 Toggle::make('is_active')
                     ->label(__('product.is_active'))
-                    ->required(),
+                    ->required()
+                    ->default(true),
                 TextInput::make('sort_order')
                     ->label(__('product.sort_order'))
                     ->required()
