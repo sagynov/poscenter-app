@@ -40,7 +40,7 @@ interface Props {
 const tg = window.Telegram?.WebApp;
 
 function formatPrice(n: number) {
-    return n.toLocaleString('ru-RU') + ' ₽';
+    return n.toLocaleString('ru-RU') + ' ₸';
 }
 
 // ---------------------------------------------------------------------------
@@ -92,7 +92,7 @@ function ProductCard({
             <div className="relative aspect-square overflow-hidden bg-black/5">
                 {product.image ? (
                     <img
-                        src={product.image}
+                        src={`/storage/${product.image}`}
                         alt={product.name}
                         className="h-full w-full object-cover"
                         loading="lazy"
@@ -121,7 +121,6 @@ function ProductCard({
                         className="absolute top-2 left-2 rounded-full px-2 py-0.5 text-xs font-bold"
                         style={{ background: '#ef4444', color: '#fff' }}
                     >
-                        −
                         {Math.round(
                             (1 - product.price / product.old_price) * 100,
                         )}

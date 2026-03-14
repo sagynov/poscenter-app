@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
         $middleware->alias([
-            'telegram.auth' => \App\Http\Middleware\ValidateTelegramInitData::class,
+            'tma.auth' => \App\Http\Middleware\ValidateTelegramInitData::class,
         ]);
         $middleware->trustProxies('*');
     })
