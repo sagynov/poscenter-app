@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-BHd3JfgJ.css",
+    "file": "assets/app-Dii7Yb4g.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -9,19 +9,32 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-DJcEIc_O.js",
+    "file": "assets/app-Dw86dsur.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
     "dynamicImports": [
+      "resources/js/pages/Bot/Cart.tsx",
       "resources/js/pages/Bot/WebApp.tsx"
     ],
     "css": [
-      "assets/app-BHd3JfgJ.css"
+      "assets/app-Dii7Yb4g.css"
+    ]
+  },
+  "resources/js/pages/Bot/Cart.tsx": {
+    "file": "assets/Cart-BgZt27qn.js",
+    "name": "Cart",
+    "src": "resources/js/pages/Bot/Cart.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx"
+    ],
+    "css": [
+      "assets/app-Dii7Yb4g.css"
     ]
   },
   "resources/js/pages/Bot/WebApp.tsx": {
-    "file": "assets/WebApp-Dv4alf90.js",
+    "file": "assets/WebApp-Dt35PugX.js",
     "name": "WebApp",
     "src": "resources/js/pages/Bot/WebApp.tsx",
     "isDynamicEntry": true,
@@ -29,7 +42,7 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-BHd3JfgJ.css"
+      "assets/app-Dii7Yb4g.css"
     ]
   }
 }

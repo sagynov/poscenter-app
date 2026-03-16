@@ -1,5 +1,7 @@
 <?php
 namespace App\Telegram\Controllers;
+
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 
 use App\Telegram\System;
@@ -25,9 +27,9 @@ class BotController
         }
         return 'success';
     }
-    public function webapp(): Response
+    public function webapp(Request $request): Response
     {
-      $categories = Category::whereNull('parent_id')
+        $categories = Category::whereNull('parent_id')
             ->orderBy('sort_order')
             ->get(['id', 'name', 'slug', 'image']);
 
@@ -47,9 +49,52 @@ class BotController
                 'category' => $p->category->slug,
             ]);
 
+        $user = $request->attributes->get('tg_user');
+
+        $cartItems = $user
+            ? CartItem::with('product')
+                ->where('telegram_user_id', $user->id)
+                ->get()
+                ->map(fn ($item) => [
+                    'id'       => $item->id,
+                    'quantity' => $item->quantity,
+                    'product'  => [
+                        'id'    => $item->product->id,
+                        'name'  => $item->product->name,
+                        'slug'  => $item->product->slug,
+                        'price' => (float) $item->product->price,
+                        'image' => $item->product->images[0] ?? null,
+                    ],
+                ])
+            : [];
+
         return Inertia::render('Bot/WebApp', [
             'categories' => $categories,
             'products'   => $products,
+            'cartItems'  => $cartItems
+        ]);
+    }
+    public function cart(Request $request): Response
+    {
+        $user = $request->attributes->get('tg_user'); // если используешь tma.auth middleware
+
+        $items = CartItem::with('product')
+            ->where('telegram_user_id', $user->id)
+            ->get()
+            ->map(fn ($item) => [
+                'id'       => $item->id,
+                'quantity' => $item->quantity,
+                'product'  => [
+                    'id'    => $item->product->id,
+                    'name'  => $item->product->name,
+                    'slug'  => $item->product->slug,
+                    'price' => (float) $item->product->price,
+                    'image' => $item->product->images[0] ?? null,
+                ],
+            ]);
+
+        return Inertia::render('Bot/Cart', [
+            'items' => $items,
         ]);
     }
 }

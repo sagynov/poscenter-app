@@ -1,9 +1,15 @@
 import { createInertiaApp } from '@inertiajs/react';
+import axios from 'axios';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../css/app.css';
 import { initializeTheme } from '@/hooks/use-appearance';
+
+const initData = window.Telegram?.WebApp?.initData;
+if (initData) {
+    axios.defaults.headers.common['X-Telegram-Init-Data'] = initData;
+}
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

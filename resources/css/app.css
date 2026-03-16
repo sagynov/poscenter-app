@@ -141,3 +141,16 @@
         @apply bg-background text-foreground;
     }
 }
+
+:root {
+    --tg-bg-color: #ffffff;
+    --tg-text-color: #333333;
+    --tg-hint-color: #959595;
+    --tg-link-color: #2481cc;
+    --tg-button-color: #34b547;
+    --tg-button-text-color: #ffffff;
+    --tg-secondary-bg-color: #f1f1f1;
+    --cat-bg-color: #eeeeee;
+    --cat-default-color: #959595;
+    --cat-active-color: #333333;
+}

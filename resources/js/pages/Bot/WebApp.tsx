@@ -1,5 +1,6 @@
 import { Head, router } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -9,7 +10,7 @@ interface Category {
     id: number;
     name: string;
     slug: string;
-    image: string | null;
+    image: string;
 }
 
 interface Product {
@@ -24,6 +25,7 @@ interface Product {
 }
 
 interface CartItem {
+    id: number;
     product: Product;
     quantity: number;
 }
@@ -31,6 +33,7 @@ interface CartItem {
 interface Props {
     categories: Category[];
     products: Product[];
+    cartItems: CartItem[];
 }
 
 // ---------------------------------------------------------------------------
@@ -52,7 +55,7 @@ function CategoryPill({
     active,
     onClick,
 }: {
-    cat: Category | { id: 0; name: string; slug: '' };
+    cat: Category | { id: 0; name: string; slug: ''; image: '' };
     active: boolean;
     onClick: () => void;
 }) {
@@ -62,11 +65,11 @@ function CategoryPill({
             className="shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-all"
             style={{
                 background: active
-                    ? 'var(--tg-button-color)'
-                    : 'var(--tg-secondary-bg-color)',
+                    ? 'var(--cat-bg-color)'
+                    : 'var(--cat-bg-color)',
                 color: active
-                    ? 'var(--tg-button-text-color)'
-                    : 'var(--tg-text-color)',
+                    ? 'var(--cat-active-color)'
+                    : 'var(--cat-default-color)',
             }}
         >
             {cat.name}
@@ -210,45 +213,9 @@ export default function WebApp({ categories, products }: Props) {
 
     const allCategories = [{ id: 0, name: 'Все', slug: '' }, ...categories];
 
-    // Telegram MainButton for checkout
-    useEffect(() => {
-        if (!tg) return;
-
-        const totalCount = cart.reduce((s, i) => s + i.quantity, 0);
-        const totalPrice = cart.reduce(
-            (s, i) => s + i.quantity * i.product.price,
-            0,
-        );
-
-        if (totalCount > 0) {
-            tg.MainButton.setText(
-                `Корзина · ${totalCount} шт. · ${formatPrice(totalPrice)}`,
-            );
-            tg.MainButton.show();
-            tg.MainButton.enable();
-        } else {
-            tg.MainButton.hide();
-        }
-
-        const handleCheckout = () => {
-            router.visit('/bot/webapp/cart', {
-                method: 'get',
-                data: {
-                    items: JSON.stringify(
-                        cart.map((i) => ({
-                            id: i.product.id,
-                            qty: i.quantity,
-                        })),
-                    ),
-                },
-            });
-        };
-
-        tg.MainButton.onClick(handleCheckout);
-        return () => {
-            tg.MainButton.offClick(handleCheckout);
-        };
-    }, [cart]);
+    const handleCheckout = useCallback(() => {
+        router.visit('/bot/webapp/cart');
+    }, []);
 
     // Telegram BackButton — скрыта на главной
     useEffect(() => {
@@ -267,15 +234,25 @@ export default function WebApp({ categories, products }: Props) {
         return matchCat && matchSearch;
     });
 
-    function toggleCart(product: Product) {
-        setCart((prev) => {
-            const exists = prev.find((i) => i.product.id === product.id);
-            if (exists) {
-                return prev.filter((i) => i.product.id !== product.id);
-            }
+    async function toggleCart(product: Product) {
+        const exists = cart.find((i) => i.product.id === product.id);
+
+        if (exists) {
+            // удалить
+            await axios.delete(`/api/cart/${exists.id}`);
+            setCart((prev) => prev.filter((i) => i.product.id !== product.id));
+        } else {
+            // добавить
+            const { data } = await axios.post('/api/cart', {
+                product_id: product.id,
+                quantity: 1,
+            });
             tg?.HapticFeedback?.impactOccurred('light');
-            return [...prev, { product, quantity: 1 }];
-        });
+            setCart((prev) => [
+                ...prev,
+                { id: data.data.id, product, quantity: 1 },
+            ]);
+        }
     }
 
     return (
@@ -378,7 +355,12 @@ export default function WebApp({ categories, products }: Props) {
                             <p className="text-sm">Ничего не найдено</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 gap-3">
+                        <div
+                            className="grid grid-cols-2 gap-3"
+                            style={{
+                                paddingBottom: cart.length > 0 ? '88px' : '0px',
+                            }}
+                        >
                             {filtered.map((product) => (
                                 <ProductCard
                                     key={product.id}
@@ -392,6 +374,33 @@ export default function WebApp({ categories, products }: Props) {
                         </div>
                     )}
                 </div>
+                {/* Корзина — фиксированная кнопка снизу */}
+                {cart.length > 0 && (
+                    <div
+                        className="fixed right-0 bottom-0 left-0 p-4"
+                        style={{ background: 'var(--tg-bg-color)' }}
+                    >
+                        <button
+                            onClick={handleCheckout}
+                            className="flex w-full items-center justify-between rounded-2xl px-5 py-3.5 font-semibold transition-opacity active:opacity-80"
+                            style={{
+                                background: 'var(--tg-button-color)',
+                                color: 'var(--tg-button-text-color)',
+                            }}
+                        >
+                            <span>Посмотреть корзину</span>
+                            <span>
+                                {formatPrice(
+                                    cart.reduce(
+                                        (s, i) =>
+                                            s + i.quantity * i.product.price,
+                                        0,
+                                    ),
+                                )}
+                            </span>
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     );

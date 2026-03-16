@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\TelegramUser;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +33,18 @@ class ValidateTelegramInitData
         // Parse and store user on request for downstream use
         parse_str($initData, $params);
         if (isset($params['user'])) {
-            $request->attributes->set('tg_user', json_decode($params['user'], true));
+            $userData = json_decode($params['user'], true);
+            $user = TelegramUser::updateOrCreate(
+              ['telegram_id' => $userData['id']],
+              [
+                  'first_name'    => $userData['first_name'] ?? '',
+                  'last_name'     => $userData['last_name'] ?? null,
+                  'username'      => $userData['username'] ?? null,
+                  'language_code' => $userData['language_code'] ?? null,
+                  'is_premium'    => $userData['is_premium'] ?? false,
+              ]
+          );
+          $request->attributes->set('tg_user', $user);
         }
 
         return $next($request);
