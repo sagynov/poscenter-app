@@ -433,7 +433,9 @@ export default function Cart() {
                                 color: 'var(--tg-button-text-color)',
                             }}
                         >
-                            <span>{paying ? 'Обработка...' : 'Оплатить'}</span>
+                            <span>
+                                {paying ? 'Обработка...' : 'Оформить заказ'}
+                            </span>
                             <span>{formatPrice(total)}</span>
                         </button>
                     </div>

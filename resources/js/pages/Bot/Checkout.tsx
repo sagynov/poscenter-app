@@ -238,7 +238,7 @@ export default function Checkout() {
                         color: 'var(--tg-button-text-color)',
                     }}
                 >
-                    {loading ? 'Создание заказа...' : 'Оформить заказ'}
+                    {loading ? 'Обработка...' : 'Оплатить'}
                 </button>
             </div>
         </>

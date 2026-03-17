@@ -9,7 +9,7 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-D2c0FENo.js",
+    "file": "assets/app-DKvHbi9u.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -23,7 +23,7 @@
     ]
   },
   "resources/js/pages/Bot/Cart.tsx": {
-    "file": "assets/Cart-evvEdMTs.js",
+    "file": "assets/Cart-DkgxAfpB.js",
     "name": "Cart",
     "src": "resources/js/pages/Bot/Cart.tsx",
     "isDynamicEntry": true,
@@ -35,7 +35,7 @@
     ]
   },
   "resources/js/pages/Bot/Checkout.tsx": {
-    "file": "assets/Checkout-Cq35hUk8.js",
+    "file": "assets/Checkout-DDX_tbmY.js",
     "name": "Checkout",
     "src": "resources/js/pages/Bot/Checkout.tsx",
     "isDynamicEntry": true,
@@ -47,7 +47,7 @@
     ]
   },
   "resources/js/pages/Bot/WebApp.tsx": {
-    "file": "assets/WebApp-BmfXZmvv.js",
+    "file": "assets/WebApp-DM7D4jnr.js",
     "name": "WebApp",
     "src": "resources/js/pages/Bot/WebApp.tsx",
     "isDynamicEntry": true,
