@@ -2,10 +2,6 @@ import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 interface Category {
     id: number;
     name: string;
@@ -30,32 +26,18 @@ interface CartItem {
     quantity: number;
 }
 
-interface Props {
-    categories: Category[];
-    products: Product[];
-    cartItems: CartItem[];
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
 const tg = window.Telegram?.WebApp;
 
 function formatPrice(n: number) {
     return n.toLocaleString('ru-RU') + ' ₸';
 }
 
-// ---------------------------------------------------------------------------
-// Sub-components
-// ---------------------------------------------------------------------------
-
 function CategoryPill({
     cat,
     active,
     onClick,
 }: {
-    cat: Category | { id: 0; name: string; slug: ''; image: '' };
+    cat: { id: number; name: string; slug: string; image: string };
     active: boolean;
     onClick: () => void;
 }) {
@@ -65,11 +47,11 @@ function CategoryPill({
             className="shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-all"
             style={{
                 background: active
-                    ? 'var(--cat-bg-color)'
-                    : 'var(--cat-bg-color)',
+                    ? 'var(--tg-button-color)'
+                    : 'var(--tg-secondary-bg-color)',
                 color: active
-                    ? 'var(--cat-active-color)'
-                    : 'var(--cat-default-color)',
+                    ? 'var(--tg-button-text-color)'
+                    : 'var(--tg-text-color)',
             }}
         >
             {cat.name}
@@ -91,7 +73,6 @@ function ProductCard({
             className="flex flex-col overflow-hidden rounded-2xl"
             style={{ background: 'var(--tg-secondary-bg-color)' }}
         >
-            {/* Image */}
             <div className="relative aspect-square overflow-hidden bg-black/5">
                 {product.image ? (
                     <img
@@ -132,7 +113,6 @@ function ProductCard({
                 )}
             </div>
 
-            {/* Info */}
             <div className="flex flex-1 flex-col gap-2 p-3">
                 <p
                     className="line-clamp-2 flex-1 text-sm leading-tight font-medium"
@@ -140,7 +120,6 @@ function ProductCard({
                 >
                     {product.name}
                 </p>
-
                 <div className="flex items-end justify-between gap-1">
                     <div>
                         <div
@@ -158,7 +137,6 @@ function ProductCard({
                             </div>
                         )}
                     </div>
-
                     <button
                         disabled={!product.in_stock}
                         onClick={onAdd}
@@ -201,23 +179,70 @@ function ProductCard({
     );
 }
 
-// ---------------------------------------------------------------------------
-// Main page
-// ---------------------------------------------------------------------------
+function ProductSkeleton() {
+    return (
+        <div
+            className="flex animate-pulse flex-col overflow-hidden rounded-2xl"
+            style={{ background: 'var(--tg-secondary-bg-color)' }}
+        >
+            <div
+                className="aspect-square w-full rounded"
+                style={{ background: 'var(--tg-hint-color)', opacity: 0.15 }}
+            />
+            <div className="flex flex-col gap-2 p-3">
+                <div
+                    className="h-3 w-full rounded"
+                    style={{
+                        background: 'var(--tg-hint-color)',
+                        opacity: 0.15,
+                    }}
+                />
+                <div
+                    className="h-3 w-2/3 rounded"
+                    style={{
+                        background: 'var(--tg-hint-color)',
+                        opacity: 0.15,
+                    }}
+                />
+                <div
+                    className="h-5 w-1/2 rounded"
+                    style={{
+                        background: 'var(--tg-hint-color)',
+                        opacity: 0.15,
+                    }}
+                />
+            </div>
+        </div>
+    );
+}
 
-export default function WebApp({ categories, products }: Props) {
-    const [activeCategory, setActiveCategory] = useState<string>('');
+export default function WebApp() {
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const [cart, setCart] = useState<CartItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [activeCategory, setActiveCategory] = useState<string>('');
     const [search, setSearch] = useState('');
     const categoryBarRef = useRef<HTMLDivElement>(null);
 
-    const allCategories = [{ id: 0, name: 'Все', slug: '' }, ...categories];
+    const allCategories = [
+        { id: 0, name: 'Все', slug: '', image: '' },
+        ...categories,
+    ];
 
-    const handleCheckout = useCallback(() => {
-        router.visit('/bot/webapp/cart');
+    useEffect(() => {
+        axios
+            .get('/api/catalog')
+            .then(({ data }) => {
+                setCategories(data.categories);
+                setProducts(data.products);
+                setCart(data.cart);
+            })
+            .catch(() => setError('Не удалось загрузить каталог'))
+            .finally(() => setLoading(false));
     }, []);
 
-    // Telegram BackButton — скрыта на главной
     useEffect(() => {
         if (!tg) return;
         tg.BackButton.hide();
@@ -225,7 +250,10 @@ export default function WebApp({ categories, products }: Props) {
         tg.expand();
     }, []);
 
-    // Filtered products
+    const handleCheckout = useCallback(() => {
+        router.visit('/bot/webapp/cart');
+    }, []);
+
     const filtered = products.filter((p) => {
         const matchCat = activeCategory === '' || p.category === activeCategory;
         const matchSearch =
@@ -236,13 +264,10 @@ export default function WebApp({ categories, products }: Props) {
 
     async function toggleCart(product: Product) {
         const exists = cart.find((i) => i.product.id === product.id);
-
         if (exists) {
-            // удалить
             await axios.delete(`/api/cart/${exists.id}`);
             setCart((prev) => prev.filter((i) => i.product.id !== product.id));
         } else {
-            // добавить
             const { data } = await axios.post('/api/cart', {
                 product_id: product.id,
                 quantity: 1,
@@ -266,7 +291,7 @@ export default function WebApp({ categories, products }: Props) {
                     color: 'var(--tg-text-color)',
                 }}
             >
-                {/* ── Header ── */}
+                {/* Header */}
                 <div
                     className="sticky top-0 z-10 flex flex-col gap-2 px-4 pt-3 pb-2"
                     style={{ background: 'var(--tg-bg-color)' }}
@@ -337,9 +362,19 @@ export default function WebApp({ categories, products }: Props) {
                     </div>
                 </div>
 
-                {/* ── Product grid ── */}
+                {/* Content */}
                 <div className="flex-1 px-4 pb-8">
-                    {filtered.length === 0 ? (
+                    {/* Skeleton */}
+                    {loading && (
+                        <div className="grid grid-cols-2 gap-3">
+                            {Array.from({ length: 6 }).map((_, i) => (
+                                <ProductSkeleton key={i} />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Empty */}
+                    {!loading && !error && filtered.length === 0 && (
                         <div className="flex flex-col items-center justify-center gap-3 py-20 opacity-40">
                             <svg
                                 width="48"
@@ -354,7 +389,10 @@ export default function WebApp({ categories, products }: Props) {
                             </svg>
                             <p className="text-sm">Ничего не найдено</p>
                         </div>
-                    ) : (
+                    )}
+
+                    {/* Products */}
+                    {!loading && !error && filtered.length > 0 && (
                         <div
                             className="grid grid-cols-2 gap-3"
                             style={{
@@ -374,7 +412,8 @@ export default function WebApp({ categories, products }: Props) {
                         </div>
                     )}
                 </div>
-                {/* Корзина — фиксированная кнопка снизу */}
+
+                {/* Корзина кнопка */}
                 {cart.length > 0 && (
                     <div
                         className="fixed right-0 bottom-0 left-0 p-4"

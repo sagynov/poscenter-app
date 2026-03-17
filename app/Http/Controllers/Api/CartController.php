@@ -41,8 +41,6 @@ class CartController extends Controller
 
         return response()->json([
             'data'  => $items,
-            'total' => round($total, 2),
-            'count' => $items->sum('quantity'),
         ]);
     }
 

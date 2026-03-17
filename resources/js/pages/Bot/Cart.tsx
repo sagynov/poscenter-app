@@ -20,10 +20,6 @@ export interface CartItem {
     quantity: number;
 }
 
-interface Props {
-    items: CartItem[];
-}
-
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -120,12 +116,10 @@ function QuantityControl({
 
 function CartItemRow({
     item,
-    editing,
     onQuantityChange,
     onRemove,
 }: {
     item: CartItem;
-    editing: boolean;
     onQuantityChange: (id: number, qty: number) => void;
     onRemove: (id: number) => void;
 }) {
@@ -187,13 +181,11 @@ function CartItemRow({
                     {formatPrice(item.product.price * item.quantity)}
                 </span>
 
-                {editing ? (
-                    <QuantityControl
-                        value={item.quantity}
-                        onChange={(qty) => onQuantityChange(item.id, qty)}
-                        onRemove={() => onRemove(item.id)}
-                    />
-                ) : null}
+                <QuantityControl
+                    value={item.quantity}
+                    onChange={(qty) => onQuantityChange(item.id, qty)}
+                    onRemove={() => onRemove(item.id)}
+                />
             </div>
         </div>
     );
@@ -203,15 +195,25 @@ function CartItemRow({
 // Main page
 // ---------------------------------------------------------------------------
 
-export default function Cart({ items: initialItems }: Props) {
-    const [items, setItems] = useState<CartItem[]>(initialItems);
-    const [editing, setEditing] = useState(false);
+export default function Cart() {
+    const [items, setItems] = useState<CartItem[]>([]);
     const [fromAstana, setFromAstana] = useState(false);
     const [paying, setPaying] = useState(false);
-    const prevEditing = useRef(editing);
+    const initialItemsRef = useRef<CartItem[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const total = items.reduce((s, i) => s + i.product.price * i.quantity, 0);
     const showPayButton = fromAstana && total >= MIN_ASTANA_AMOUNT;
+
+    useEffect(() => {
+        axios
+            .get('/api/cart')
+            .then(({ data }) => {
+                setItems(data.data);
+                initialItemsRef.current = data.data;
+            })
+            .finally(() => setLoading(false));
+    }, []);
 
     // Telegram setup
     useEffect(() => {
@@ -226,27 +228,13 @@ export default function Cart({ items: initialItems }: Props) {
         };
     }, []);
 
-    // Sync quantity changes to server when leaving edit mode
-    useEffect(() => {
-        if (prevEditing.current && !editing) {
-            // batch update
-            items.forEach((item) => {
-                const original = initialItems.find((i) => i.id === item.id);
-                if (original && original.quantity !== item.quantity) {
-                    axios.patch(`/api/cart/${item.id}`, {
-                        quantity: item.quantity,
-                    });
-                }
-            });
-        }
-        prevEditing.current = editing;
-    }, [editing]);
-
     function handleQuantityChange(id: number, qty: number) {
         tg?.HapticFeedback?.impactOccurred('light');
         setItems((prev) =>
             prev.map((i) => (i.id === id ? { ...i, quantity: qty } : i)),
         );
+
+        axios.put(`/api/cart/${id}`, { quantity: qty }).catch(console.error);
     }
 
     function handleRemove(id: number) {
@@ -258,13 +246,22 @@ export default function Cart({ items: initialItems }: Props) {
     function handlePay() {
         setPaying(true);
         tg?.HapticFeedback?.notificationOccurred('success');
-        // TODO: router.post('/bot/webapp/checkout', { items })
+        router.visit('/bot/webapp/checkout');
     }
-
+    if (loading) {
+        return (
+            <div
+                className="flex min-h-screen items-center justify-center"
+                style={{ background: 'var(--tg-bg-color)' }}
+            >
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-current border-t-transparent opacity-40" />
+            </div>
+        );
+    }
     if (items.length === 0) {
         return (
             <>
-                <Head title="Корзина" />
+                <Head title="Ваш заказ" />
                 <div
                     className="flex min-h-screen flex-col items-center justify-center gap-4 px-6"
                     style={{
@@ -302,7 +299,7 @@ export default function Cart({ items: initialItems }: Props) {
 
     return (
         <>
-            <Head title="Корзина" />
+            <Head title="Ваш заказ" />
 
             <div
                 className="flex min-h-screen flex-col"
@@ -320,15 +317,23 @@ export default function Cart({ items: initialItems }: Props) {
                             '1px solid color-mix(in srgb, var(--tg-hint-color) 15%, transparent)',
                     }}
                 >
-                    <h1 className="text-lg font-bold">Корзина</h1>
-                    <button
-                        onClick={() => setEditing((v) => !v)}
-                        className="text-sm font-medium transition-opacity active:opacity-60"
-                        style={{ color: 'var(--tg-link-color)' }}
-                    >
-                        {editing ? 'Готово' : 'Изменить'}
-                    </button>
+                    <h1 className="text-lg font-bold">Ваш заказ</h1>
                 </div>
+
+                {/* Подсказка почему нельзя оплатить */}
+                {!fromAstana || total < MIN_ASTANA_AMOUNT ? (
+                    <div
+                        className="p-3 text-xs"
+                        style={{
+                            background: '#85ff98cf',
+                            color: 'var(--tg-button-color)',
+                        }}
+                    >
+                        {!fromAstana
+                            ? 'Выберите "Я из Астаны", чтобы оплатить онлайн'
+                            : `Минимальная сумма для онлайн оплаты ${formatPrice(MIN_ASTANA_AMOUNT)}`}
+                    </div>
+                ) : null}
 
                 {/* ── Items ── */}
                 <div className="flex-1 px-4">
@@ -336,7 +341,6 @@ export default function Cart({ items: initialItems }: Props) {
                         <CartItemRow
                             key={item.id}
                             item={item}
-                            editing={editing}
                             onQuantityChange={handleQuantityChange}
                             onRemove={handleRemove}
                         />
@@ -416,19 +420,16 @@ export default function Cart({ items: initialItems }: Props) {
                     </label>
 
                     {/* Pay button */}
-                    <div
-                        className="overflow-hidden transition-all duration-300"
-                        style={{
-                            maxHeight: showPayButton ? '80px' : '0px',
-                            opacity: showPayButton ? 1 : 0,
-                        }}
-                    >
+                    <div>
                         <button
                             onClick={handlePay}
-                            disabled={paying}
-                            className="flex w-full items-center justify-between rounded-2xl px-5 py-3.5 font-semibold transition-opacity disabled:opacity-60"
+                            disabled={!showPayButton || paying}
+                            className="flex w-full items-center justify-between rounded-2xl px-5 py-3.5 font-semibold transition-opacity disabled:cursor-not-allowed"
                             style={{
-                                background: 'var(--tg-button-color)',
+                                background:
+                                    !showPayButton || paying
+                                        ? '#959595'
+                                        : 'var(--tg-button-color)',
                                 color: 'var(--tg-button-text-color)',
                             }}
                         >
