@@ -35,7 +35,7 @@ class TelegramUser extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function cartItems(): HasMany
+    public function cart_items(): HasMany
     {
         return $this->hasMany(CartItem::class);
     }

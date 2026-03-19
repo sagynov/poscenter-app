@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-B-YNIv3H.css",
+    "file": "assets/app-CPkyYCmf.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -9,21 +9,22 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-DKvHbi9u.js",
+    "file": "assets/app-Bdfa-4gJ.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
     "dynamicImports": [
       "resources/js/pages/Bot/Cart.tsx",
       "resources/js/pages/Bot/Checkout.tsx",
+      "resources/js/pages/Bot/Success.tsx",
       "resources/js/pages/Bot/WebApp.tsx"
     ],
     "css": [
-      "assets/app-B-YNIv3H.css"
+      "assets/app-CPkyYCmf.css"
     ]
   },
   "resources/js/pages/Bot/Cart.tsx": {
-    "file": "assets/Cart-DkgxAfpB.js",
+    "file": "assets/Cart-BEIFTACb.js",
     "name": "Cart",
     "src": "resources/js/pages/Bot/Cart.tsx",
     "isDynamicEntry": true,
@@ -31,11 +32,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-B-YNIv3H.css"
+      "assets/app-CPkyYCmf.css"
     ]
   },
   "resources/js/pages/Bot/Checkout.tsx": {
-    "file": "assets/Checkout-DDX_tbmY.js",
+    "file": "assets/Checkout-vsycOQUo.js",
     "name": "Checkout",
     "src": "resources/js/pages/Bot/Checkout.tsx",
     "isDynamicEntry": true,
@@ -43,11 +44,23 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-B-YNIv3H.css"
+      "assets/app-CPkyYCmf.css"
+    ]
+  },
+  "resources/js/pages/Bot/Success.tsx": {
+    "file": "assets/Success-CJ0Bivaj.js",
+    "name": "Success",
+    "src": "resources/js/pages/Bot/Success.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx"
+    ],
+    "css": [
+      "assets/app-CPkyYCmf.css"
     ]
   },
   "resources/js/pages/Bot/WebApp.tsx": {
-    "file": "assets/WebApp-DM7D4jnr.js",
+    "file": "assets/WebApp-D74jkVOz.js",
     "name": "WebApp",
     "src": "resources/js/pages/Bot/WebApp.tsx",
     "isDynamicEntry": true,
@@ -55,7 +68,7 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-B-YNIv3H.css"
+      "assets/app-CPkyYCmf.css"
     ]
   }
 }

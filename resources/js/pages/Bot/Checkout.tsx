@@ -16,12 +16,14 @@ const WebView = window.Telegram?.WebView;
 export default function Checkout() {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
-    const [city, setCity] = useState('');
+    const [city, setCity] = useState('Астана');
     const [address, setAddress] = useState('');
     const [comment, setComment] = useState('');
     const [payment, setPayment] = useState<'kaspi'>('kaspi');
 
     const [loading, setLoading] = useState(false);
+
+    const [errors, setErrors] = useState<Record<string, string>>();
 
     // -----------------------------------------------------------------------
     // Init Telegram data
@@ -90,22 +92,22 @@ export default function Checkout() {
     // -----------------------------------------------------------------------
 
     async function handleSubmit() {
-        if (!name || !phone || !city || !address) {
-            tg?.HapticFeedback?.notificationOccurred('error');
-            alert('Заполните обязательные поля');
-            return;
-        }
+        // if (!name || !phone || !city || !address) {
+        //     tg?.HapticFeedback?.notificationOccurred('error');
+
+        //     return;
+        // }
 
         setLoading(true);
 
         try {
-            await axios.post('/api/checkout', {
+            await axios.post('/api/orders', {
                 name,
                 phone,
                 city,
-                address,
-                comment,
-                payment,
+                shipping_address: address,
+                note: comment,
+                payment_method: payment,
             });
 
             tg?.HapticFeedback?.notificationOccurred('success');
@@ -113,6 +115,10 @@ export default function Checkout() {
             router.visit('/bot/webapp/success');
         } catch (e) {
             tg?.HapticFeedback?.notificationOccurred('error');
+
+            if (e.response?.status === 422) {
+                setErrors(e.response.data.errors);
+            }
         } finally {
             setLoading(false);
         }
@@ -146,6 +152,11 @@ export default function Checkout() {
                                 background: 'var(--tg-secondary-bg-color)',
                             }}
                         />
+                        {errors?.name && (
+                            <p className="px-1 text-xs text-red-400">
+                                {errors.name}
+                            </p>
+                        )}
 
                         {/* Phone */}
                         <div className="flex gap-2">
@@ -170,6 +181,11 @@ export default function Checkout() {
                                 Мой номер
                             </button>
                         </div>
+                        {errors?.phone && (
+                            <p className="px-1 text-xs text-red-400">
+                                {errors.phone}
+                            </p>
+                        )}
 
                         {/* City */}
                         <input
@@ -180,8 +196,13 @@ export default function Checkout() {
                             style={{
                                 background: 'var(--tg-secondary-bg-color)',
                             }}
+                            readOnly
                         />
-
+                        {errors?.city && (
+                            <p className="px-1 text-xs text-red-400">
+                                {errors.city}
+                            </p>
+                        )}
                         {/* Address */}
                         <input
                             value={address}
@@ -192,6 +213,11 @@ export default function Checkout() {
                                 background: 'var(--tg-secondary-bg-color)',
                             }}
                         />
+                        {errors?.shipping_address && (
+                            <p className="px-1 text-xs text-red-400">
+                                {errors.shipping_address}
+                            </p>
+                        )}
 
                         {/* Comment */}
                         <textarea

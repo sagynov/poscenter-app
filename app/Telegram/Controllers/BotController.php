@@ -35,4 +35,8 @@ class BotController
     {
         return Inertia::render('Bot/Checkout');
     }
+    public function success(Request $request): Response
+    {
+        return Inertia::render('Bot/Success');
+    }
 }

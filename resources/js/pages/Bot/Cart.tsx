@@ -325,7 +325,7 @@ export default function Cart() {
                     <div
                         className="p-3 text-xs"
                         style={{
-                            background: '#85ff98cf',
+                            background: '#E1F4E4',
                             color: 'var(--tg-button-color)',
                         }}
                     >
