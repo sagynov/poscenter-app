@@ -32,7 +32,9 @@ export default function Checkout() {
     useEffect(() => {
         if (!tg) return;
 
+        const handleBack = () => router.visit('/bot/webapp/cart');
         tg.BackButton.show();
+        tg.BackButton.offClick(handleBack); // сначала снимаем
         tg.BackButton.onClick(() => router.visit('/bot/webapp/cart'));
 
         tg.ready();
@@ -47,6 +49,7 @@ export default function Checkout() {
         }
 
         return () => {
+            tg.BackButton.offClick(handleBack); // чистим при unmount
             tg.BackButton.hide();
         };
     }, []);
@@ -101,7 +104,7 @@ export default function Checkout() {
         setLoading(true);
 
         try {
-            await axios.post('/api/orders', {
+            const res = await axios.post('/api/orders', {
                 name,
                 phone,
                 city,
@@ -111,7 +114,12 @@ export default function Checkout() {
             });
 
             tg?.HapticFeedback?.notificationOccurred('success');
-
+            if (res.data.qrBase64) {
+                sessionStorage.setItem('kaspi_qr', res.data.qrBase64);
+            }
+            if (res.data.url) {
+                sessionStorage.setItem('kaspi_url', res.data.url);
+            }
             router.visit('/bot/webapp/success');
         } catch (e) {
             tg?.HapticFeedback?.notificationOccurred('error');

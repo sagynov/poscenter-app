@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 
 const tg = window.Telegram?.WebApp;
 
+const isMobile = ['android', 'ios'].includes(tg?.platform ?? '');
+
 // ---------------------------------------------------------------------------
 // Animated checkmark SVG
 // ---------------------------------------------------------------------------
@@ -68,6 +70,14 @@ function AnimatedCheck() {
 
 export default function Success() {
     const [visible, setVisible] = useState(false);
+    const qrBase64 = sessionStorage.getItem('kaspi_qr');
+    if (qrBase64) {
+        sessionStorage.removeItem('kaspi_qr');
+    }
+    const kaspiUrl = sessionStorage.getItem('kaspi_url');
+    if (kaspiUrl) {
+        sessionStorage.removeItem('kaspi_url');
+    }
 
     useEffect(() => {
         // Trigger entrance animation
@@ -122,8 +132,35 @@ export default function Success() {
                             style={{ color: 'var(--tg-hint-color)' }}
                         >
                             Ваш заказ успешно принят.{'\n'}
-                            Мы свяжемся с вами в ближайшее время.
+                            Оплатите удобным способом:
                         </p>
+                    </div>
+
+                    <div>
+                        {qrBase64 && !isMobile && (
+                            <img
+                                src={qrBase64}
+                                className="h-48 w-48 rounded-xl"
+                            />
+                        )}
+                        {kaspiUrl && isMobile && (
+                            <a
+                                href={kaspiUrl}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    tg?.openLink(kaspiUrl!);
+                                }}
+                                className="block w-full rounded-2xl py-3 text-center font-semibold"
+                                style={{
+                                    background: 'var(--tg-button-color)',
+                                    color: 'var(--tg-button-text-color)',
+                                    paddingLeft: 5,
+                                    paddingRight: 5,
+                                }}
+                            >
+                                Оплатить в Kaspi →
+                            </a>
+                        )}
                     </div>
 
                     {/* Order info card */}

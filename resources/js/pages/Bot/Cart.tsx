@@ -218,12 +218,15 @@ export default function Cart() {
     // Telegram setup
     useEffect(() => {
         if (!tg) return;
+
+        const handleBack = () => router.visit('/bot/webapp');
         tg.BackButton.show();
-        tg.BackButton.onClick(() => router.visit('/bot/webapp'));
-        tg.MainButton.hide();
+        tg.BackButton.offClick(handleBack); // сначала снимаем
+        tg.BackButton.onClick(handleBack);
         tg.ready();
 
         return () => {
+            tg.BackButton.offClick(handleBack); // сначала снимаем
             tg.BackButton.hide();
         };
     }, []);

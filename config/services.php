@@ -36,6 +36,11 @@ return [
     ],
     'telegram' => [
       'bot_token' => env('TELEGRAM_BOT_TOKEN')
-    ]
+    ],
+    'wappi' => [
+        'token'      => env('WAPPI_TOKEN'),
+        'profile_id' => env('WAPPI_PROFILE_ID'),
+        'recipient' => env('WAPPI_RECIPIENT')
+    ],
 
 ];

@@ -15,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(\App\Services\Wappi::class, function ($app) {
+            return new \App\Services\Wappi(config('services.wappi.token'), config('services.wappi.profile_id'));
+        });
     }
 
     /**
