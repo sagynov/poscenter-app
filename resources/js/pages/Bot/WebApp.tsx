@@ -59,15 +59,21 @@ function CategoryPill({
     );
 }
 
+interface ProductCardProps {
+    product: Product;
+    cartItem: CartItem | undefined;
+    onAdd: () => void;
+    onIncrement: () => void;
+    onDecrement: () => void;
+}
+
 function ProductCard({
     product,
-    inCart,
+    cartItem,
     onAdd,
-}: {
-    product: Product;
-    inCart: boolean;
-    onAdd: () => void;
-}) {
+    onIncrement,
+    onDecrement,
+}: ProductCardProps) {
     return (
         <div
             className="flex flex-col overflow-hidden rounded-2xl"
@@ -113,15 +119,16 @@ function ProductCard({
                 )}
             </div>
 
-            <div className="flex flex-1 flex-col gap-2 p-3">
-                <p
-                    className="line-clamp-2 flex-1 text-sm leading-tight font-medium"
-                    style={{ color: 'var(--tg-text-color)' }}
-                >
-                    {product.name}
-                </p>
-                <div className="flex items-end justify-between gap-1">
-                    <div>
+            <div className="flex flex-1 flex-col gap-3 p-3">
+                <div className="flex justify-between">
+                    <p
+                        className="line-clamp-2 flex-1 text-left text-sm leading-tight font-medium"
+                        style={{ color: 'var(--tg-text-color)' }}
+                    >
+                        {product.name}
+                    </p>
+
+                    <div className="text-right">
                         <div
                             className="text-base font-bold"
                             style={{ color: 'var(--tg-text-color)' }}
@@ -137,43 +144,48 @@ function ProductCard({
                             </div>
                         )}
                     </div>
+                </div>
+
+                {/* Кнопка / счётчик */}
+                {!cartItem ? (
                     <button
                         disabled={!product.in_stock}
                         onClick={onAdd}
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-transform active:scale-90 disabled:opacity-30"
+                        className="w-full rounded-xl py-2 text-sm transition-opacity active:opacity-75 disabled:opacity-30"
                         style={{
-                            background: inCart
-                                ? '#22c55e'
-                                : 'var(--tg-button-color)',
+                            background: 'var(--tg-text-color)',
                             color: 'var(--tg-button-text-color)',
                         }}
                     >
-                        {inCart ? (
-                            <svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                        ) : (
-                            <svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                            >
-                                <line x1="12" y1="5" x2="12" y2="19" />
-                                <line x1="5" y1="12" x2="19" y2="12" />
-                            </svg>
-                        )}
+                        В корзину
                     </button>
-                </div>
+                ) : (
+                    <div
+                        className="flex items-center justify-between overflow-hidden rounded-xl"
+                        style={{ background: 'var(--tg-text-color)' }}
+                    >
+                        <button
+                            onClick={onDecrement}
+                            className="flex h-9 w-9 items-center justify-center text-lg transition-opacity active:opacity-60"
+                            style={{ color: 'var(--tg-button-text-color)' }}
+                        >
+                            −
+                        </button>
+                        <span
+                            className="text-sm"
+                            style={{ color: 'var(--tg-button-text-color)' }}
+                        >
+                            {cartItem.quantity}
+                        </span>
+                        <button
+                            onClick={onIncrement}
+                            className="flex h-9 w-9 items-center justify-center text-lg transition-opacity active:opacity-60"
+                            style={{ color: 'var(--tg-button-text-color)' }}
+                        >
+                            +
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -262,21 +274,51 @@ export default function WebApp() {
         return matchCat && matchSearch;
     });
 
-    async function toggleCart(product: Product) {
-        const exists = cart.find((i) => i.product.id === product.id);
-        if (exists) {
-            await axios.delete(`/api/cart/${exists.id}`);
+    async function addToCart(product: Product) {
+        const { data } = await axios.post('/api/cart', {
+            product_id: product.id,
+            quantity: 1,
+        });
+        tg?.HapticFeedback?.impactOccurred('light');
+        setCart((prev) => [
+            ...prev,
+            { id: data.data.id, product, quantity: 1 },
+        ]);
+    }
+
+    async function incrementCart(product: Product) {
+        const item = cart.find((i) => i.product.id === product.id);
+        if (!item) return;
+        await axios.patch(`/api/cart/${item.id}`, {
+            quantity: item.quantity + 1,
+        });
+        tg?.HapticFeedback?.impactOccurred('light');
+        setCart((prev) =>
+            prev.map((i) =>
+                i.product.id === product.id
+                    ? { ...i, quantity: i.quantity + 1 }
+                    : i,
+            ),
+        );
+    }
+
+    async function decrementCart(product: Product) {
+        const item = cart.find((i) => i.product.id === product.id);
+        if (!item) return;
+        if (item.quantity <= 1) {
+            await axios.delete(`/api/cart/${item.id}`);
             setCart((prev) => prev.filter((i) => i.product.id !== product.id));
         } else {
-            const { data } = await axios.post('/api/cart', {
-                product_id: product.id,
-                quantity: 1,
+            await axios.patch(`/api/cart/${item.id}`, {
+                quantity: item.quantity - 1,
             });
-            tg?.HapticFeedback?.impactOccurred('light');
-            setCart((prev) => [
-                ...prev,
-                { id: data.data.id, product, quantity: 1 },
-            ]);
+            setCart((prev) =>
+                prev.map((i) =>
+                    i.product.id === product.id
+                        ? { ...i, quantity: i.quantity - 1 }
+                        : i,
+                ),
+            );
         }
     }
 
@@ -403,10 +445,12 @@ export default function WebApp() {
                                 <ProductCard
                                     key={product.id}
                                     product={product}
-                                    inCart={cart.some(
+                                    cartItem={cart.find(
                                         (i) => i.product.id === product.id,
                                     )}
-                                    onAdd={() => toggleCart(product)}
+                                    onAdd={() => addToCart(product)}
+                                    onIncrement={() => incrementCart(product)}
+                                    onDecrement={() => decrementCart(product)}
                                 />
                             ))}
                         </div>

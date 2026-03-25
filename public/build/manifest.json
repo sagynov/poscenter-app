@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-DyW5aPR4.css",
+    "file": "assets/app-DtpinTWX.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -9,7 +9,7 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-4NAIgjH8.js",
+    "file": "assets/app-kAKcm8D_.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -20,11 +20,11 @@
       "resources/js/pages/Bot/WebApp.tsx"
     ],
     "css": [
-      "assets/app-DyW5aPR4.css"
+      "assets/app-DtpinTWX.css"
     ]
   },
   "resources/js/pages/Bot/Cart.tsx": {
-    "file": "assets/Cart-9UgzIGfV.js",
+    "file": "assets/Cart-Cp6e7N-Q.js",
     "name": "Cart",
     "src": "resources/js/pages/Bot/Cart.tsx",
     "isDynamicEntry": true,
@@ -32,11 +32,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DyW5aPR4.css"
+      "assets/app-DtpinTWX.css"
     ]
   },
   "resources/js/pages/Bot/Checkout.tsx": {
-    "file": "assets/Checkout-CkDhnrvR.js",
+    "file": "assets/Checkout-4G_0QUEC.js",
     "name": "Checkout",
     "src": "resources/js/pages/Bot/Checkout.tsx",
     "isDynamicEntry": true,
@@ -44,11 +44,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DyW5aPR4.css"
+      "assets/app-DtpinTWX.css"
     ]
   },
   "resources/js/pages/Bot/Success.tsx": {
-    "file": "assets/Success-HIpZLWFG.js",
+    "file": "assets/Success-CcnE5Q6i.js",
     "name": "Success",
     "src": "resources/js/pages/Bot/Success.tsx",
     "isDynamicEntry": true,
@@ -56,11 +56,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DyW5aPR4.css"
+      "assets/app-DtpinTWX.css"
     ]
   },
   "resources/js/pages/Bot/WebApp.tsx": {
-    "file": "assets/WebApp-pXnW7QHA.js",
+    "file": "assets/WebApp-gcXglu19.js",
     "name": "WebApp",
     "src": "resources/js/pages/Bot/WebApp.tsx",
     "isDynamicEntry": true,
@@ -68,7 +68,7 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DyW5aPR4.css"
+      "assets/app-DtpinTWX.css"
     ]
   }
 }
