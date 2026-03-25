@@ -166,7 +166,7 @@ function ProductCard({
                 ) : (
                     <div
                         className="flex items-center justify-between overflow-hidden rounded-xl"
-                        style={{ background: 'var(--tg-text-color)' }}
+                        style={{ background: 'var(--tg-button-color)' }}
                     >
                         <button
                             onClick={onDecrement}
