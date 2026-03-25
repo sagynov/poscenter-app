@@ -124,7 +124,7 @@ function ProductCard({
             </div>
 
             <div className="flex flex-1 flex-col gap-3 p-3">
-                <div className="flex flex-1 justify-between">
+                <div className="flex flex-1 items-start justify-between gap-2">
                     <p
                         className="line-clamp-2 flex-1 text-left text-sm leading-tight font-medium"
                         style={{ color: 'var(--tg-text-color)' }}
@@ -134,7 +134,7 @@ function ProductCard({
 
                     <div className="text-right">
                         <div
-                            className="text-base font-bold"
+                            className="text-sm font-bold"
                             style={{ color: 'var(--tg-text-color)' }}
                         >
                             {formatPrice(product.price)}
