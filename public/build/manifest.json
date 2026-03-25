@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-DuTz8iGq.css",
+    "file": "assets/app-C_-YhRdc.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -9,7 +9,7 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-GHE6TETX.js",
+    "file": "assets/app-C5sIyyC6.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -20,11 +20,11 @@
       "resources/js/pages/Bot/WebApp.tsx"
     ],
     "css": [
-      "assets/app-DuTz8iGq.css"
+      "assets/app-C_-YhRdc.css"
     ]
   },
   "resources/js/pages/Bot/Cart.tsx": {
-    "file": "assets/Cart-MydZi3Cg.js",
+    "file": "assets/Cart-CxWI8FXi.js",
     "name": "Cart",
     "src": "resources/js/pages/Bot/Cart.tsx",
     "isDynamicEntry": true,
@@ -32,11 +32,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DuTz8iGq.css"
+      "assets/app-C_-YhRdc.css"
     ]
   },
   "resources/js/pages/Bot/Checkout.tsx": {
-    "file": "assets/Checkout-DWMt9GUp.js",
+    "file": "assets/Checkout-9cizApQJ.js",
     "name": "Checkout",
     "src": "resources/js/pages/Bot/Checkout.tsx",
     "isDynamicEntry": true,
@@ -44,11 +44,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DuTz8iGq.css"
+      "assets/app-C_-YhRdc.css"
     ]
   },
   "resources/js/pages/Bot/Success.tsx": {
-    "file": "assets/Success-BlG7SlRg.js",
+    "file": "assets/Success-Bumk_aAF.js",
     "name": "Success",
     "src": "resources/js/pages/Bot/Success.tsx",
     "isDynamicEntry": true,
@@ -56,11 +56,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DuTz8iGq.css"
+      "assets/app-C_-YhRdc.css"
     ]
   },
   "resources/js/pages/Bot/WebApp.tsx": {
-    "file": "assets/WebApp-DAZyJmuC.js",
+    "file": "assets/WebApp-BhGVWXMc.js",
     "name": "WebApp",
     "src": "resources/js/pages/Bot/WebApp.tsx",
     "isDynamicEntry": true,
@@ -68,7 +68,7 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DuTz8iGq.css"
+      "assets/app-C_-YhRdc.css"
     ]
   }
 }

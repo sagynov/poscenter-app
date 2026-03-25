@@ -1,4 +1,4 @@
-import{c as q,r as T,j as t,b as F,H as R}from"./app-GHE6TETX.js";/* empty css            */const o=window.Telegram?.WebApp,Y=["android","ios"].includes(o?.platform??"");function W(){const e=q.c(1);let s;return e[0]===Symbol.for("react.memo_cache_sentinel")?(s=t.jsxs("svg",{viewBox:"0 0 80 80",fill:"none",xmlns:"http://www.w3.org/2000/svg",style:{width:80,height:80},children:[t.jsx("style",{children:`
+import{c as q,r as T,j as t,b as F,H as R}from"./app-C5sIyyC6.js";/* empty css            */const o=window.Telegram?.WebApp,Y=["android","ios"].includes(o?.platform??"");function W(){const e=q.c(1);let s;return e[0]===Symbol.for("react.memo_cache_sentinel")?(s=t.jsxs("svg",{viewBox:"0 0 80 80",fill:"none",xmlns:"http://www.w3.org/2000/svg",style:{width:80,height:80},children:[t.jsx("style",{children:`
                 @keyframes circleAnim {
                     from { stroke-dashoffset: 251; opacity: 0; }
                     to   { stroke-dashoffset: 0;   opacity: 1; }

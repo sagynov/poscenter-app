@@ -324,7 +324,7 @@ export default function Cart() {
                 {/* Подсказка почему нельзя оплатить */}
                 {total < MIN_ASTANA_AMOUNT ? (
                     <div
-                        className="mx-4 mt-3 flex items-center gap-3 rounded-md p-3 text-xs"
+                        className="mx-4 mt-1 flex items-center gap-3 rounded-md p-3 text-xs"
                         style={{
                             background: '#E1F4E4',
                             color: 'var(--tg-button-color)',
