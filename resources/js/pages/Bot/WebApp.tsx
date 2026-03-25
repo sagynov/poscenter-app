@@ -124,7 +124,7 @@ function ProductCard({
             </div>
 
             <div className="flex flex-1 flex-col gap-3 p-3">
-                <div className="flex justify-between">
+                <div className="flex flex-1 justify-between">
                     <p
                         className="line-clamp-2 flex-1 text-left text-sm leading-tight font-medium"
                         style={{ color: 'var(--tg-text-color)' }}
