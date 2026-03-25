@@ -106,11 +106,15 @@ function ProductCard({
                         </span>
                     </div>
                 )}
-                {product.old_price && (
+                {product.old_price && product.price < product.old_price && (
                     <div
                         className="absolute top-2 left-2 rounded-full px-2 py-0.5 text-xs font-bold"
-                        style={{ background: '#ef4444', color: '#fff' }}
+                        style={{
+                            background: 'var(--tg-button-color)',
+                            color: '#fff',
+                        }}
                     >
+                        -
                         {Math.round(
                             (1 - product.price / product.old_price) * 100,
                         )}
