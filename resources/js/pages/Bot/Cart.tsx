@@ -324,7 +324,7 @@ export default function Cart() {
                 {/* Подсказка почему нельзя оплатить */}
                 {total < MIN_ASTANA_AMOUNT ? (
                     <div
-                        className="mx-4 mt-1 flex items-center gap-3 rounded-md p-3 text-xs"
+                        className="mx-4 flex items-center gap-3 rounded-md p-3 text-xs"
                         style={{
                             background: '#E1F4E4',
                             color: 'var(--tg-button-color)',
@@ -336,7 +336,7 @@ export default function Cart() {
                             className="h-5 w-5 shrink-0"
                         />
                         <span>
-                            {`Для оформления заказа добавьте товаров на сумму не менее ${formatPrice(MIN_ASTANA_AMOUNT)} ₸`}
+                            {`Для оформления заказа добавьте товаров на сумму не менее ${formatPrice(MIN_ASTANA_AMOUNT)}`}
                         </span>
                     </div>
                 ) : null}
