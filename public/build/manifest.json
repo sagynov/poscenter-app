@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-DtpinTWX.css",
+    "file": "assets/app-DuTz8iGq.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -9,7 +9,7 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-BYWK2QrE.js",
+    "file": "assets/app-Dj2wlfkh.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -20,11 +20,11 @@
       "resources/js/pages/Bot/WebApp.tsx"
     ],
     "css": [
-      "assets/app-DtpinTWX.css"
+      "assets/app-DuTz8iGq.css"
     ]
   },
   "resources/js/pages/Bot/Cart.tsx": {
-    "file": "assets/Cart-Bc9L7DrE.js",
+    "file": "assets/Cart-C20CCIKE.js",
     "name": "Cart",
     "src": "resources/js/pages/Bot/Cart.tsx",
     "isDynamicEntry": true,
@@ -32,11 +32,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DtpinTWX.css"
+      "assets/app-DuTz8iGq.css"
     ]
   },
   "resources/js/pages/Bot/Checkout.tsx": {
-    "file": "assets/Checkout-DAv9Bh29.js",
+    "file": "assets/Checkout-oN0-qAdb.js",
     "name": "Checkout",
     "src": "resources/js/pages/Bot/Checkout.tsx",
     "isDynamicEntry": true,
@@ -44,11 +44,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DtpinTWX.css"
+      "assets/app-DuTz8iGq.css"
     ]
   },
   "resources/js/pages/Bot/Success.tsx": {
-    "file": "assets/Success-D-iR071-.js",
+    "file": "assets/Success-CVVSsNDB.js",
     "name": "Success",
     "src": "resources/js/pages/Bot/Success.tsx",
     "isDynamicEntry": true,
@@ -56,11 +56,11 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DtpinTWX.css"
+      "assets/app-DuTz8iGq.css"
     ]
   },
   "resources/js/pages/Bot/WebApp.tsx": {
-    "file": "assets/WebApp-U-7RHqaQ.js",
+    "file": "assets/WebApp-NIpxs6b5.js",
     "name": "WebApp",
     "src": "resources/js/pages/Bot/WebApp.tsx",
     "isDynamicEntry": true,
@@ -68,7 +68,7 @@
       "resources/js/app.tsx"
     ],
     "css": [
-      "assets/app-DtpinTWX.css"
+      "assets/app-DuTz8iGq.css"
     ]
   }
 }

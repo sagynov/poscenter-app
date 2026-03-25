@@ -316,38 +316,63 @@ export default function Cart() {
                     className="sticky top-0 z-10 flex items-center justify-between px-4 py-3"
                     style={{
                         background: 'var(--tg-bg-color)',
-                        borderBottom:
-                            '1px solid color-mix(in srgb, var(--tg-hint-color) 15%, transparent)',
                     }}
                 >
                     <h1 className="text-lg font-bold">Ваш заказ</h1>
                 </div>
 
                 {/* Подсказка почему нельзя оплатить */}
-                {!fromAstana || total < MIN_ASTANA_AMOUNT ? (
+                {total < MIN_ASTANA_AMOUNT ? (
                     <div
-                        className="p-3 text-xs"
+                        className="mx-4 mt-3 flex items-center gap-3 rounded-md p-3 text-xs"
                         style={{
                             background: '#E1F4E4',
                             color: 'var(--tg-button-color)',
                         }}
                     >
-                        {!fromAstana
-                            ? 'Выберите "Я из Астаны", чтобы оплатить онлайн'
-                            : `Минимальная сумма для онлайн оплаты ${formatPrice(MIN_ASTANA_AMOUNT)}`}
+                        <img
+                            src="/images/attention_green.svg"
+                            alt=""
+                            className="h-5 w-5 shrink-0"
+                        />
+                        <span>
+                            {`Для оформления заказа добавьте товаров на сумму не менее ${formatPrice(MIN_ASTANA_AMOUNT)} ₸`}
+                        </span>
                     </div>
                 ) : null}
 
                 {/* ── Items ── */}
-                <div className="flex-1 px-4">
-                    {items.map((item) => (
-                        <CartItemRow
-                            key={item.id}
-                            item={item}
-                            onQuantityChange={handleQuantityChange}
-                            onRemove={handleRemove}
-                        />
-                    ))}
+                <div className="flex-1">
+                    <div className="px-4">
+                        {items.map((item) => (
+                            <CartItemRow
+                                key={item.id}
+                                item={item}
+                                onQuantityChange={handleQuantityChange}
+                                onRemove={handleRemove}
+                            />
+                        ))}
+                    </div>
+                    {/* Подсказка почему нельзя оплатить */}
+                    {!fromAstana ? (
+                        <div
+                            className="mx-4 mt-3 flex items-center gap-3 rounded-md p-3 text-xs"
+                            style={{
+                                background: 'var(--tg-danger-bg-color)',
+                                color: 'var(--tg-danger-text-color)',
+                            }}
+                        >
+                            <img
+                                src="/images/attention_red.svg"
+                                alt=""
+                                className="h-5 w-5 shrink-0"
+                            />
+                            <span>
+                                Пожалуйста, учтите: пока мы работаем только по
+                                Астане.
+                            </span>
+                        </div>
+                    ) : null}
                 </div>
 
                 {/* ── Footer ── */}
@@ -409,16 +434,6 @@ export default function Cart() {
                             >
                                 Я из Астаны
                             </p>
-                            {!fromAstana || total < MIN_ASTANA_AMOUNT ? (
-                                <p
-                                    className="mt-0.5 text-xs"
-                                    style={{ color: 'var(--tg-hint-color)' }}
-                                >
-                                    {!fromAstana
-                                        ? 'Отметьте для оплаты онлайн'
-                                        : `Минимальная сумма ${formatPrice(MIN_ASTANA_AMOUNT)}`}
-                                </p>
-                            ) : null}
                         </div>
                     </label>
 

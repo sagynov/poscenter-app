@@ -153,4 +153,6 @@
     --cat-bg-color: #eeeeee;
     --cat-default-color: #959595;
     --cat-active-color: #333333;
+    --tg-danger-bg-color: #fce2e4;
+    --tg-danger-text-color: #ff3a4d;
 }
