@@ -74,10 +74,6 @@ export default function Success() {
     if (qrBase64) {
         sessionStorage.removeItem('kaspi_qr');
     }
-    const kaspiUrl = sessionStorage.getItem('kaspi_url');
-    if (kaspiUrl) {
-        sessionStorage.removeItem('kaspi_url');
-    }
 
     useEffect(() => {
         // Trigger entrance animation
@@ -89,6 +85,13 @@ export default function Success() {
         tg.MainButton.hide();
         tg.ready();
         tg.HapticFeedback?.notificationOccurred('success');
+
+        const kaspiUrl = sessionStorage.getItem('kaspi_url');
+        sessionStorage.removeItem('kaspi_url');
+
+        if (isMobile && kaspiUrl) {
+            tg.openLink(kaspiUrl);
+        }
 
         return () => clearTimeout(t);
     }, []);
@@ -143,7 +146,7 @@ export default function Success() {
                                 className="h-48 w-48 rounded-xl"
                             />
                         )}
-                        {kaspiUrl && isMobile && (
+                        {/* {kaspiUrl && isMobile && (
                             <a
                                 href={kaspiUrl}
                                 onClick={(e) => {
@@ -160,7 +163,7 @@ export default function Success() {
                             >
                                 Оплатить в Kaspi →
                             </a>
-                        )}
+                        )} */}
                     </div>
 
                     {/* Order info card */}
@@ -177,16 +180,16 @@ export default function Success() {
                         <ul className="flex flex-col gap-3">
                             {[
                                 {
-                                    icon: '📦',
-                                    text: 'Мы подготовим ваш заказ к отправке',
-                                },
-                                {
                                     icon: '💬',
                                     text: 'Менеджер свяжется с вами для подтверждения',
                                 },
                                 {
+                                    icon: '📦',
+                                    text: 'Мы подготовим ваш заказ к отправке',
+                                },
+                                {
                                     icon: '🚚',
-                                    text: 'Доставка займёт 2–5 рабочих дней',
+                                    text: 'Доставим ваш заказ в течение 1 дня',
                                 },
                             ].map(({ icon, text }) => (
                                 <li
@@ -211,7 +214,7 @@ export default function Success() {
 
                 {/* Bottom button */}
                 <div
-                    className="w-full"
+                    className="mt-3 w-full"
                     style={{
                         opacity: visible ? 1 : 0,
                         transform: visible
