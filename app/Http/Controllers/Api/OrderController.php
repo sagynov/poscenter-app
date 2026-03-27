@@ -49,29 +49,35 @@ class OrderController extends Controller
           ])->toArray();
           $validated['status'] = 'pending';
           $validated['total'] = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
-
-          DB::transaction(function () use ($user, $validated, $wappi) {
-              $order = $user->orders()->create($validated);
-              $order_id = $order->id;
-              $user->cart_items()->delete();
-              // Отправим уведомление
-              $text = 'Новый заказ в боте t.me/poscenter_zakaz_termo_bot'."\n\n";
-              $text .= 'Номер заказа: *№'.$order_id.'*'."\n";
-              $text .= 'Имя клиента: *'.$order->name.'*'."\n";
-              $text .= 'Телефон: *'.('+'.$order->phone).'*'."\n";
-              $text .= 'Город: *'.$order->city.'*'."\n";
-              $text .= 'Адрес доставки: *'.$order->shipping_address.'*'."\n";
-              $text .= 'Сумма заказа: *'.$order->total.' KZT*'."\n\n";
-              $text .= 'Состав заказа:'."\n";
-              foreach($order->items as $item) {
-                $text .= $item['name'].': '.$item['price'].' * '.$item['quantity'].' = '.$item['subtotal'].' KZT'."\n";
-              }
-              $text .= "\n";
-              
-              $text .= 'Свяжитесь с клиентом для деталей. Удачи!';
-              $recipient = config('services.wappi.recipient');
-              $wappi->sendMessage($recipient, $text);
-          });
+          
+          $order = $user->orders()->create($validated);
+          $user->cart_items()->delete();
+      
+          // Отправим уведомление
+          $text = 'Новый заказ в боте t.me/poscenter_zakaz_termo_bot'."\n\n";
+          $text .= 'Номер заказа: *№'.$order->id.'*'."\n";
+          $text .= 'Имя клиента: *'.$order->name.'*'."\n";
+          $text .= 'Телефон: *'.('+'.$order->phone).'*'."\n";
+          $text .= 'Город: *'.$order->city.'*'."\n";
+          $text .= 'Адрес доставки: *'.$order->shipping_address.'*'."\n";
+          $text .= 'Сумма заказа: *'.$order->total.' KZT*'."\n\n";
+          $text .= 'Состав заказа:'."\n";
+          foreach($order->items as $item) {
+            $text .= $item['name'].': '.$item['price'].' * '.$item['quantity'].' = '.$item['subtotal'].' KZT'."\n";
+          }
+          $text .= "\n";
+          
+          $text .= 'Свяжитесь с клиентом для деталей. Удачи!';
+          $recipient = config('services.wappi.recipient');
+          try {
+            $wappi->sendMessage($recipient, $text);
+          } catch (\Exception $e) {
+            \Log::error('Wappi sendOrderNotification failed', [
+                'order_id' => $order->id,
+                'message'  => $e->getMessage(),
+            ]);
+          }
+          
 
           $url = 'https://kaspi.kz/pay/POSCENTERSOFTWARE?service_id=9975&14628=AR-00009999&amount='.$validated['total'];
           $logoPath = public_path('images/kaspi-logo.png'); // Убедитесь, что файл существует
