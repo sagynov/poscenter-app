@@ -74,6 +74,7 @@ export default function Success() {
     if (qrBase64) {
         sessionStorage.removeItem('kaspi_qr');
     }
+    const kaspiUrl = sessionStorage.getItem('kaspi_url');
 
     useEffect(() => {
         // Trigger entrance animation
@@ -146,24 +147,22 @@ export default function Success() {
                                 className="h-48 w-48 rounded-xl"
                             />
                         )}
-                        {/* {kaspiUrl && isMobile && (
+                        {kaspiUrl && isMobile && (
                             <a
                                 href={kaspiUrl}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     tg?.openLink(kaspiUrl!);
                                 }}
-                                className="block w-full rounded-2xl py-3 text-center font-semibold"
+                                className="block w-full rounded-2xl px-3 py-3 text-center font-semibold"
                                 style={{
                                     background: 'var(--tg-button-color)',
                                     color: 'var(--tg-button-text-color)',
-                                    paddingLeft: 5,
-                                    paddingRight: 5,
                                 }}
                             >
-                                Оплатить в Kaspi →
+                                Оплатить в Kaspi
                             </a>
-                        )} */}
+                        )}
                     </div>
 
                     {/* Order info card */}

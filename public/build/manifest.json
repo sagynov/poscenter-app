@@ -9,7 +9,7 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-CGZvxB0I.js",
+    "file": "assets/app-B_MI2Sn5.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -24,7 +24,7 @@
     ]
   },
   "resources/js/pages/Bot/Cart.tsx": {
-    "file": "assets/Cart-CbLcAI5g.js",
+    "file": "assets/Cart-3Q6_JJPj.js",
     "name": "Cart",
     "src": "resources/js/pages/Bot/Cart.tsx",
     "isDynamicEntry": true,
@@ -36,7 +36,7 @@
     ]
   },
   "resources/js/pages/Bot/Checkout.tsx": {
-    "file": "assets/Checkout-C0dmeNU0.js",
+    "file": "assets/Checkout-VAfogF28.js",
     "name": "Checkout",
     "src": "resources/js/pages/Bot/Checkout.tsx",
     "isDynamicEntry": true,
@@ -48,7 +48,7 @@
     ]
   },
   "resources/js/pages/Bot/Success.tsx": {
-    "file": "assets/Success-DxZcFxct.js",
+    "file": "assets/Success-Bko0T4CK.js",
     "name": "Success",
     "src": "resources/js/pages/Bot/Success.tsx",
     "isDynamicEntry": true,
@@ -60,7 +60,7 @@
     ]
   },
   "resources/js/pages/Bot/WebApp.tsx": {
-    "file": "assets/WebApp-dnia13Ej.js",
+    "file": "assets/WebApp-DJhEGWIM.js",
     "name": "WebApp",
     "src": "resources/js/pages/Bot/WebApp.tsx",
     "isDynamicEntry": true,
