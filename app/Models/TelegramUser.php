@@ -17,6 +17,9 @@ class TelegramUser extends Model
         'username',
         'language_code',
         'is_premium',
+        'phone',
+        'city',
+        'shipping_address'
     ];
 
     protected $casts = [

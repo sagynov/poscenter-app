@@ -48,6 +48,14 @@ export default function Checkout() {
             setName(fullName);
         }
 
+        // профиль пользователя
+        axios.get('/api/profile').then((res) => {
+            const profile = res.data;
+            if (profile.phone) setPhone(profile.phone);
+            if (profile.city) setCity(profile.city);
+            if (profile.shipping_address) setAddress(profile.shipping_address);
+        });
+
         return () => {
             tg.BackButton.offClick(handleBack); // чистим при unmount
             tg.BackButton.hide();

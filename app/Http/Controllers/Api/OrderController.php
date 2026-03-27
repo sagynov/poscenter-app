@@ -32,6 +32,13 @@ class OrderController extends Controller
           'payment_method' => 'required|string'
         ]);
         $user = $request->attributes->get('tg_user');
+        // сохраним данные клиента
+        $user->update([
+          'phone' => $validated['phone'],
+          'city' => $validated['city'],
+          'shipping_address' => $validated['shipping_address'],
+        ]);
+
         if ($user->cart_items()->exists()) {
           $cartItems = $user->cart_items()->with('product')->get();
           $validated['items'] = $cartItems->map(fn($item) => [
@@ -42,8 +49,6 @@ class OrderController extends Controller
           ])->toArray();
           $validated['status'] = 'pending';
           $validated['total'] = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
-
-          $order_id = 0;
 
           DB::transaction(function () use ($user, $validated, $wappi) {
               $order = $user->orders()->create($validated);
