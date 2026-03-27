@@ -231,13 +231,12 @@ export default function Cart() {
         };
     }, []);
 
-    function handleQuantityChange(id: number, qty: number) {
+    async function handleQuantityChange(id: number, qty: number) {
         tg?.HapticFeedback?.impactOccurred('light');
+        await axios.patch(`/api/cart/${id}`, { quantity: qty });
         setItems((prev) =>
             prev.map((i) => (i.id === id ? { ...i, quantity: qty } : i)),
         );
-
-        axios.put(`/api/cart/${id}`, { quantity: qty }).catch(console.error);
     }
 
     function handleRemove(id: number) {
