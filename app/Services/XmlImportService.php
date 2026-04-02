@@ -70,7 +70,7 @@ class XmlImportService
             'old_price'  => $oldPrice,
         ];
         foreach ($offer->availabilities->availability as $avail) {
-            $data['stock'] = $avail['stockCount'];
+            $data['stock'] = (int) $avail['stockCount'];
         }
         if(!$product) {
           // Создаем если нет

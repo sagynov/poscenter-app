@@ -51,6 +51,16 @@ class OrderController extends Controller
           $validated['total'] = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
           
           $order = $user->orders()->create($validated);
+
+          // Уменьшаем stock
+          foreach ($cartItems as $item) {
+                if($item->product->stock > 0 && $item->quantity <= $item->product->stock) {
+                  $item->product->decrement('stock', $item->quantity);
+                }else{
+                  $item->product->update(['stock' => 0]);
+                }
+          }
+
           $user->cart_items()->delete();
       
           // Отправим уведомление
