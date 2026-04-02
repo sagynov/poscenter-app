@@ -123,4 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'uncategorized_id' => env('UNCATEGORIZED_ID')
+
 ];

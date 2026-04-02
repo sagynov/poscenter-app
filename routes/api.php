@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CatalogController;
+use App\Http\Controllers\Api\ImportController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Http\Request;
@@ -17,3 +18,5 @@ Route::middleware('tma.auth')->group(function () {
     Route::apiResource('/cart', CartController::class);
     Route::apiResource('/orders', OrderController::class);
 });
+
+Route::get('/import', ImportController::class);
