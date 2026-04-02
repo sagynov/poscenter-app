@@ -13,6 +13,11 @@ class Category extends Model
         'image',
         'parent_id',
         'sort_order',
+        'is_active'
+    ];
+
+    protected $casts = [
+      'is_active' => 'boolean'
     ];
 
     public function parent(): BelongsTo

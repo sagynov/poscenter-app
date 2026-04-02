@@ -77,6 +77,7 @@ class XmlImportService
           $data['slug'] = $sku;
           $data['category_id'] = $category_id ? $category_id : config('app.uncategorized_id');
           $data['sort_order'] = 100;
+          $data['is_active'] = false;
           $product = Product::create($data);
         }
         // обновим если есть

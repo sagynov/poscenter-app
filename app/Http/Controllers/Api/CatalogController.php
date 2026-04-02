@@ -15,6 +15,7 @@ class CatalogController extends Controller
     {
         $user = $request->attributes->get('tg_user');
         $categories = Category::whereNull('parent_id')
+            ->where('is_active', true)
             ->orderBy('sort_order')
             ->get(['id', 'name', 'slug', 'image']);
 

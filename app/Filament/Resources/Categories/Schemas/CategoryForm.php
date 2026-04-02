@@ -6,6 +6,7 @@ use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -48,6 +49,10 @@ class CategoryForm
                     ->required()
                     ->numeric()
                     ->default(100),
+                Toggle::make('is_active')
+                    ->label(__('category.is_active'))
+                    ->required()
+                    ->default(true),
             ]);
     }
 }
